@@ -18,26 +18,31 @@ namespace SharpView.Utils
         {
             var foundFiles = Enumerable.Empty<string>();
 
-            if (searchOption == SearchOption.AllDirectories)
-            {
-                try
-                {
-                    IEnumerable<string> subDirs = Directory.EnumerateDirectories(rootPath);
-                    foreach (string dir in subDirs)
-                    {
-                        System.Console.WriteLine("Searching Directory: " + dir);
-                        foundFiles = foundFiles.Concat(GetDirectoryFiles(dir, patternMatchs, searchOption)); // Add files in subdirectories recursively to the list
-                    }
-                }
-                catch (UnauthorizedAccessException) { }
-                catch (PathTooLongException) { }
-            }
-
             try
             {
-                foundFiles = foundFiles.Concat(Directory.EnumerateFiles(rootPath, "*.*").Where(x => patternMatchs.EndsWith(x, StringComparison.OrdinalIgnoreCase))); // Add files from the current directory
+                if (searchOption == SearchOption.AllDirectories)
+                {
+                    try
+                    {
+                        IEnumerable<string> subDirs = Directory.EnumerateDirectories(rootPath);
+                        foreach (string dir in subDirs)
+                        {
+                            System.Console.WriteLine("Searching Directory: " + dir);
+                            foundFiles = foundFiles.Concat(GetDirectoryFiles(dir, patternMatchs, searchOption)); // Add files in subdirectories recursively to the list
+                        }
+                    }
+                    catch (UnauthorizedAccessException) { }
+                    catch (PathTooLongException) { }
+                }
+
+                try
+                {
+                    foundFiles = foundFiles.Concat(Directory.EnumerateFiles(rootPath, "*.*").Where(x => patternMatchs.EndsWith(x, StringComparison.OrdinalIgnoreCase))); // Add files from the current directory
+                }
+                catch (UnauthorizedAccessException) { }
+            } catch (Exception e) {
+                System.Console.WriteLine("SharpView.Utils.PathExtension.GetDirectoryFiles - Error - " + e.Message)
             }
-            catch (UnauthorizedAccessException) { }
 
             return foundFiles;
         }
