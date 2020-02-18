@@ -41,7 +41,7 @@ namespace SharpView.Utils
                 }
                 catch (UnauthorizedAccessException) { }
             } catch (Exception e) {
-                System.Console.WriteLine("SharpView.Utils.PathExtension.GetDirectoryFiles - Error - " + e.Message)
+                System.Console.WriteLine("SharpView.Utils.PathExtension.GetDirectoryFiles - Error - " + e.Message);
             }
 
             return foundFiles;
