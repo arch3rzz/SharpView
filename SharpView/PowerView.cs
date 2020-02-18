@@ -9500,10 +9500,13 @@ namespace SharpView
                     System.Threading.Thread.Sleep(RandNo.Next((int)((1 - args.Jitter) * args.Delay), (int)((1 + args.Jitter) * args.Delay)) * 1000);
 
                     Logger.Write_Verbose($@"[Find-InterestingDomainShareFile] Enumerating server {TargetComputer} ({Counter} of {TargetComputers.Count()})");
-                    var ret = _Find_InterestingDomainShareFile(new[] { TargetComputer }, args.Include, args.ExcludedShares, args.OfficeDocs, /*args.ExcludeHidden*/false, args.FreshEXEs, /*args.CheckWriteAccess*/ false, args.LastAccessTime, args.LastWriteTime, args.CreationTime, LogonToken);
+                    IEnumerable<FoundFile> ret = _Find_InterestingDomainShareFile(new[] { TargetComputer }, args.Include, args.ExcludedShares, args.OfficeDocs, /*args.ExcludeHidden*/false, args.FreshEXEs, /*args.CheckWriteAccess*/ false, args.LastAccessTime, args.LastWriteTime, args.CreationTime, LogonToken);
                     if (ret != null)
                     {
-                        Console.WriteLine($@"[+] Result: {ret}");
+                        foreach (FoundFile f in ret)
+                        {
+                            Console.WriteLine($@"[+] Result: {f.Path}");
+                        }
                     }
                 }
             }
@@ -9517,12 +9520,15 @@ namespace SharpView
                             TargetComputers,
                             TargetComputer =>
                             {
-                                var ret = _Find_InterestingDomainShareFile(new[] { TargetComputer }, args.Include, args.ExcludedShares, args.OfficeDocs, /*args.ExcludeHidden*/false, args.FreshEXEs, /*args.CheckWriteAccess*/ false, args.LastAccessTime, args.LastWriteTime, args.CreationTime, LogonToken);
+                                IEnumerable<FoundFile> ret = _Find_InterestingDomainShareFile(new[] { TargetComputer }, args.Include, args.ExcludedShares, args.OfficeDocs, /*args.ExcludeHidden*/false, args.FreshEXEs, /*args.CheckWriteAccess*/ false, args.LastAccessTime, args.LastWriteTime, args.CreationTime, LogonToken);
                                 lock (rets)
                                 {
                                     if (ret != null)
                                     {
-                                        Console.WriteLine($@"[+] Result: {ret}");
+                                        foreach (FoundFile f in ret)
+                                        {
+                                            Console.WriteLine($@"[+] Result: {f.Path}");
+                                        }
                                     }
                                 }
                             });
