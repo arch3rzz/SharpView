@@ -476,7 +476,7 @@ namespace SharpView
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="args"></param>
         /// <returns>System.DirectoryServices.SearchResult or LDAPProperty</returns>
@@ -672,7 +672,7 @@ namespace SharpView
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="args"></param>
         /// <returns>System.DirectoryServices.SearchResult or LDAPProperty</returns>
@@ -902,7 +902,7 @@ namespace SharpView
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>System.DirectoryServices.SearchResult or LDAPProperty</returns>
         public static IEnumerable<object> Get_DomainObject(Args_Get_DomainObject args = null)
@@ -3828,8 +3828,8 @@ namespace SharpView
                  System[
                      Provider[
                          @Name='Microsoft-Windows-Security-Auditing'
-                     ] 
-                     and (Level=4 or Level=0) and (EventID=4624) 
+                     ]
+                     and (Level=4 or Level=0) and (EventID=4624)
                      and TimeCreated[
                          @SystemTime&gt;='{args.StartTime.ToUniversalTime().ToString("s")}' and @SystemTime&lt;='{args.EndTime.ToUniversalTime().ToString("s")}'
                     ]
@@ -7940,7 +7940,7 @@ namespace SharpView
             CSVWriter.Dispose();
             CSVStream.Dispose();
         }
-        
+
         // the host enumeration block we're using to enumerate all servers
         private static IEnumerable<string> _Find_LocalAdminAccess(string[] ComputerName, IntPtr TokenHandle)
         {
@@ -9276,7 +9276,7 @@ namespace SharpView
                              owner = File.GetAccessControl(file).GetOwner(typeof(SecurityIdentifier)).Translate(typeof(System.Security.Principal.NTAccount)).Value;
                         }
                         catch{
-                             owner = "Access was Denied"; 
+                             owner = "Access was Denied";
                         }
 
                         DateTime lastAccessTime;
@@ -9301,9 +9301,9 @@ namespace SharpView
                         long length;
                         try
                         {
-                            length =new FileInfo(file).Length; 
+                            length =new FileInfo(file).Length;
                         }catch { length = 0; }
-                      
+
 
                         var FoundFile = new FoundFile
                         {
@@ -9502,7 +9502,9 @@ namespace SharpView
                     Logger.Write_Verbose($@"[Find-InterestingDomainShareFile] Enumerating server {TargetComputer} ({Counter} of {TargetComputers.Count()})");
                     var ret = _Find_InterestingDomainShareFile(new[] { TargetComputer }, args.Include, args.ExcludedShares, args.OfficeDocs, /*args.ExcludeHidden*/false, args.FreshEXEs, /*args.CheckWriteAccess*/ false, args.LastAccessTime, args.LastWriteTime, args.CreationTime, LogonToken);
                     if (ret != null)
-                        rets.AddRange(ret);
+                    {
+                        Console.WriteLine($@"[+] Result: {ret}");
+                    }
                 }
             }
             else
@@ -9519,7 +9521,9 @@ namespace SharpView
                                 lock (rets)
                                 {
                                     if (ret != null)
-                                        rets.AddRange(ret);
+                                    {
+                                        Console.WriteLine($@"[+] Result: {ret}");
+                                    }
                                 }
                             });
             }
